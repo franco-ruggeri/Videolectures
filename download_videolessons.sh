@@ -21,7 +21,8 @@ mkdir -p "$path_download"
 # webpage
 curl -s --cookie "$cookie" $url_page > "$path_download"/$info
 course=$(cat "$path_download"/$info | grep 'h2 text-primary' | cut -d '>' -f 2 | \
-	cut -d '<' -f 1 | sed 's/^ *//g' | sed 's/ *$//g' | tr ' ' '_')  # leading and trailing white spaces removed
+	cut -d '<' -f 1 | tr ':\-/\\' ' ' | tr -s ' ' | tr ' ' '_' | \
+	sed 's/^ *//g' | sed 's/ *$//g')  # leading/trailing white spaces and special characters removed
 echo "Course:" $course
 
 # download
@@ -38,10 +39,13 @@ while read line; do
 
 	# build url and name of video
 	url_video=$base_url_video$(cat $tmp/$info | grep -e '<a id="video.*Video</a>' | cut -d '"' -f 4)
-	n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 2)	# number of lesson
-	if [ $n = "Lezione" ]; then	# in old pages there is a space between <year> and "Lezione"
-		n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f 3)
-	fi
+	for i in {1..10}; do
+		n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f $i)	# lecture number
+		echo $n | grep -q -E '^[0-9]+$'  # is it a number (not a year, so less than 1000)?
+		if [ $? -eq 0 ] && [ $n -lt 1000 ]; then 
+			break
+		fi
+	done
 	filename=$course"_lez_"$n".mp4"
 
 	# download video
@@ -53,8 +57,9 @@ while read line; do
 		fi
 	done
 	if [ $found -ne 1 ]; then
+		echo -n "Dowloading $filename... "
 		wget -O "$path_download"/$filename -q $url_video
-		echo "$filename downloaded"
+		echo "done"
 	else
 		echo "$filename already present"
 	fi

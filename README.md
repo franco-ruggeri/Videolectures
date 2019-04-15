@@ -20,6 +20,6 @@ sudo apt install curl
 * Copy the webpage url of the videolesson 1
 * Run the script:
 	+ 1st parameter: cookies
-	+ 2nd parameter: url
+	+ 2nd parameter: url (between quotes)
 	+ 3rd parameter: path where to download videolessons
-	+ Example: ./download_videolessons.sh cookies.txt https://didattica.polito.it/portal/pls/portal/sviluppo.videolezioni.vis?cor=410&arg=Lezioni%20on-line&lez=17584 ./Videolessons
+	+ Example: ./download_videolessons.sh cookies.txt "https://didattica.polito.it/portal/pls/portal/sviluppo.videolezioni.vis?cor=410&arg=Lezioni%20on-line&lez=17584" ./Videolessons
