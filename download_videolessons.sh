@@ -40,9 +40,9 @@ while read line; do
 	# build url and name of video
 	url_video=$base_url_video$(cat $tmp/$info | grep -e '<a id="video.*Video</a>' | cut -d '"' -f 4)
 	for i in {1..10}; do
-		n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f $i)	# number of lesson
-		echo $n | grep -q -E '^[0-9]+$'  # is it a number?
-		if [ $? -eq 0 ]; then  
+		n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f $i)	# lecture number
+		echo $n | grep -q -E '^[0-9]+$'  # is it a number (not a year, so less than 1000)?
+		if [ $? -eq 0 ] && [ $n -lt 1000 ]; then 
 			break
 		fi
 	done
