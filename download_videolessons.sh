@@ -21,7 +21,7 @@ mkdir -p "$path_download"
 # webpage
 curl -s --cookie "$cookie" $url_page > "$path_download"/$info
 course=$(cat "$path_download"/$info | grep 'h2 text-primary' | cut -d '>' -f 2 | \
-	cut -d '<' -f 1 | tr ':-/\' ' ' | tr -s ' ' | tr ' ' '_' | \
+	cut -d '<' -f 1 | tr ':\-/\\' ' ' | tr -s ' ' | tr ' ' '_' | \
 	sed 's/^ *//g' | sed 's/ *$//g')  # leading/trailing white spaces and special characters removed
 echo "Course:" $course
 
@@ -41,7 +41,7 @@ while read line; do
 	url_video=$base_url_video$(cat $tmp/$info | grep -e '<a id="video.*Video</a>' | cut -d '"' -f 4)
 	for i in {1..10}; do
 		n=$(echo $line | cut -d '>' -f 2 | cut -d '<' -f 1 | cut -d ' ' -f $i)	# number of lesson
-		echo $n | grep -q -e '^[0-9]+$'  # is it a number?
+		echo $n | grep -q -E '^[0-9]+$'  # is it a number?
 		if [ $? -eq 0 ]; then  
 			break
 		fi
@@ -57,8 +57,9 @@ while read line; do
 		fi
 	done
 	if [ $found -ne 1 ]; then
+		echo -n "Dowloading $filename... "
 		wget -O "$path_download"/$filename -q $url_video
-		echo "$filename downloaded"
+		echo "done"
 	else
 		echo "$filename already present"
 	fi
