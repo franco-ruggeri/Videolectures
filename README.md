@@ -15,11 +15,11 @@ sudo apt install curl
 
 ## How to use
 * Open firefox
-* Log in at www.polito.it and go to the webpage of the video lecture 1
+* Log in at www.polito.it and go to the webpage of the videolecture 1
 * Export cookies by clicking on the add-on icon (upper right corner)
-* Copy the webpage url of the video lecture 1
+* Copy the webpage url of the videolecture 1
 * Run the script:
 	+ 1st parameter: cookies
 	+ 2nd parameter: url (between quotes)
-	+ 3rd parameter: path where to download video lectures
-	+ Example: ./download.sh cookies.txt "https://didattica.polito.it/portal/pls/portal/sviluppo.videolezioni.vis?cor=410&arg=Lezioni%20on-line&lez=17584" ./Video_lectures
+	+ 3rd parameter: path where to download videolectures
+	+ Example: ./download.sh cookies.txt "https://didattica.polito.it/portal/pls/portal/sviluppo.videolezioni.vis?cor=410&arg=Lezioni%20on-line&lez=17584" ./Videolectures
