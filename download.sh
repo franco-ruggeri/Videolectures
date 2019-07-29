@@ -21,8 +21,9 @@ mkdir -p "$path_download"
 # webpage
 curl -s --cookie "$cookie" $url_page > "$path_download"/$info
 course=$(cat "$path_download"/$info | grep 'h2 text-primary' | cut -d '>' -f 2 | \
-	cut -d '<' -f 1 | tr ':\-/\\' ' ' | tr -s ' ' | tr ' ' '_' | \
-	sed 's/^ *//g' | sed 's/ *$//g')  # leading/trailing white spaces and special characters removed
+	cut -d '<' -f 1 | tr ':\-/\\' ' ' | tr -s ' ' | 
+	sed 's/^ *//g' | sed 's/ *$//g' | \
+	tr ' ' '_')
 echo "Course:" $course
 
 # download
